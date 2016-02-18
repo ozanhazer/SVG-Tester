@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>SVG Tester</title>
+    <style>
+        body {
+            background-color: #eee;
+            width: 600px;
+            margin-left: auto;
+            margin-right: auto;
+            font-family: helvetica;
+            font-size: 14px;
+            line-height: 16px;
+        }
+        .path {
+            margin-top: 30px;
+        }
+        textarea {
+            padding: 10px;
+            width: 100%;
+            font-family: helvetica;
+            font-size: 14px;
+            line-height: 16px;
+        }
+        li {
+            padding-top: 5px;
+            padding-bottom: 5px;
+        }
+        .note {
+            margin-top: 5px;
+            font-size: .9em;
+            color: #666;
+            line-height: 1.4em;
+        }
+    </style>
+</head>
+<body>
+
+
+    <svg xmlns="http://www.w3.org/2000/svg">
+        <path id="svg_path" d=""></path>
+    </svg>
+
+    <div class="path">
+        <textarea name="x" id="path" cols="30" rows="10">
+M0,0 A10,10 0 0,1 0,100
+</textarea>
+    </div>
+
+    <p>
+        You can use this as a starting point: M0,0 A10,10 0 0,1 0,100
+    </p>
+
+    <h2>Notes About Path Commands</h2>
+
+    <ul>
+        <li>
+          Coordinates are absolute if the command is upper-case and relative if lower. Case doesn't matter for the commands that are not taking parameters (eg Z)
+        </li>
+        <li>
+            Cubic Bezier: C x1,y1 x2,y2 x,y
+            <div class="note">
+                x1,y1 first control point,<br>
+                x2,y2 second control point,<br>
+                x,y end point
+            </div>
+        </li>
+        <li>Move to: M x y</li>
+        <li>Close Path: Z</li>
+        <li>
+            Arc: A rx ry x-axis-rotation large-arc-flag sweep-flag cx cy
+            <div class="note">
+                large-arc-flag: Can take 0 or 1 as a value. 1: Arc angle is more than 180, 0: Less than 180<br>
+                sweep-flag: Can also take 0 or 1 as a value. 1: clockwise, 0: anti-clockwise<br>
+                See this to understand how it works: <a href="http://www.w3.org/TR/SVG/images/paths/arcs02.png">http://www.w3.org/TR/SVG/images/paths/arcs02.png</a>
+            </div>
+        </li>
+    </ul>
+
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.4/jquery.min.js"></script>
+    <script>
+        $(function () {
+            $('#path').keyup(function() {
+                $('#svg_path').attr('d', $(this).val());
+            }).trigger('keyup').focus();
+        });
+    </script>
+</body>
+</html>
