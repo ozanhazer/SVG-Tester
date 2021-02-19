@@ -2,16 +2,16 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>SVG Tester</title>
+    <title>SVG Path Playground</title>
     <style>
         body {
             background-color: #eee;
-            width: 600px;
+            width: 800px;
             margin-left: auto;
             margin-right: auto;
             font-family: helvetica;
             font-size: 14px;
-            line-height: 16px;
+            line-height: 20px;
         }
         .path {
             margin-top: 30px;
@@ -33,49 +33,65 @@
             color: #666;
             line-height: 1.4em;
         }
+
+        code {
+            background-color: #ddd;
+            padding: 2px 6px;
+            border-radius: 3px;
+            color: #c00;
+        }
     </style>
 </head>
 <body>
 
+    <h1>SVG Path Playground</h1>
 
-    <svg xmlns="http://www.w3.org/2000/svg">
-        <path id="svg_path" d=""></path>
+    <svg xmlns="http://www.w3.org/2000/svg" width="150" height="150" style="background-color: #fff;">
+        <path id="svg_path" d="" fill="transparent" stroke="#069" stroke-width="2"></path>
     </svg>
 
     <div class="path">
-        <textarea name="x" id="path" cols="30" rows="10">
-M0,0 A10,10 0 0,1 0,100
+        <textarea name="x" id="path" cols="30" rows="10" style="font-family: monospace;">
+M 10, 10
+A 10, 10, 0, 0, 1, 40, 100
 </textarea>
     </div>
 
-    <p>
-        You can use this as a starting point: M0,0 A10,10 0 0,1 0,100
-    </p>
-
-    <h2>Notes About Path Commands</h2>
+    <h2>How &lt;path&gt; works</h2>
 
     <ul>
-        <li>
-          Coordinates are absolute if the command is upper-case and relative if lower. Case doesn't matter for the commands that are not taking parameters (eg Z)
+        <li>Top left corner is <code>0, 0</code>.</li>
+        <li>x axis increses to the right, y axis increases to the down.</li>
+        <li>You start from <code>0, 0</code> and define your new destination coordinates with each command.</li>
+        <li>You can update your current position without drawing anything with the <code>M</code> command.
+        <li>Coordinates are absolute if the command is upper-case and relative if lower.
+            Case doesn't matter for the commands that are not taking parameters (i.e. <code>Z</code>)</li>
+        <li>Comma (,) is used to separate commands and arguments but it's optional. Arguments can be separated with space character too.
+            So <code>M10,10L15,15</code> and <code>M10,10, L15,15</code> are both fine.
         </li>
+    </ul>
+
+    <h2>Commands</h2>
+
+    <ul>
+        <li><code>M x,y</code> Move to coordinate</li>
+        <li><code>L x,y</code> Line</li>
         <li>
-            Cubic Bezier: C x1,y1 x2,y2 x,y
+            <code>A radius-x,radius-y x-axis-rotation large-arc-flag sweep-flag x,y</code> Arc
+
             <div class="note">
-                x1,y1 first control point,<br>
-                x2,y2 second control point,<br>
-                x,y end point
+                <code>large-arc-flag</code>: <code>1</code>: Arc angle is more than 180, <code>0</code>: Less than 180<br>
+                <code>sweep-flag</code>: <code>1</code>: clockwise, <code>0</code>: anti-clockwise<br>
+                See this to understand how it works: <a href="https://www.w3.org/TR/SVG/images/paths/arcs02.png" target="_blank">https://www.w3.org/TR/SVG/images/paths/arcs02.png</a>
             </div>
         </li>
-        <li>Move to: M x y</li>
-        <li>Close Path: Z</li>
-        <li>
-            Arc: A rx ry x-axis-rotation large-arc-flag sweep-flag cx cy
-            <div class="note">
-                large-arc-flag: Can take 0 or 1 as a value. 1: Arc angle is more than 180, 0: Less than 180<br>
-                sweep-flag: Can also take 0 or 1 as a value. 1: clockwise, 0: anti-clockwise<br>
-                See this to understand how it works: <a href="http://www.w3.org/TR/SVG/images/paths/arcs02.png">http://www.w3.org/TR/SVG/images/paths/arcs02.png</a>
-            </div>
-        </li>
+        <li><code>H x</code> Horizontal line</li>
+        <li><code>V y</code> Vertical line</li>
+        <li><code>C x1,y1 x2,y2 x,y</code> Cubic bezier</li>
+        <li><code>S x2,y2 x,y</code> Cubic bezier shortcut</li>
+        <li><code>Q x1,y1 x,y</code> Quadratic bezier curve</li>
+        <li><code>T x,y</code> Quadratic bezier curve shortcut</li>
+        <li><code>Z</code> Close path</li>
     </ul>
 
 
